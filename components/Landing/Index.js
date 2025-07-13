@@ -10,9 +10,10 @@ const Index = () => {
       {/* <Navbar refs={refs} /> */}
       <main style={{background:'#F4F4F4'}} >
         <Home />
+        <About />
         <Gallery />
         <Contact /> 
-        {/* <About />
+        {/* 
         <OurProjects />
         */
         }
