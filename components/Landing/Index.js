@@ -8,12 +8,14 @@ const Index = () => {
   return (
     <>
       {/* <Navbar refs={refs} /> */}
-      <main>
+      <main style={{background:'#F4F4F4'}} >
         <Home />
+        <Gallery />
+        <Contact /> 
         {/* <About />
         <OurProjects />
-        <Gallery />
-        <Contact /> */}
+        */
+        }
       </main>
     </>
   );

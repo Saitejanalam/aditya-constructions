@@ -2,7 +2,6 @@ const Home = () => {
   return (
     <section
       style={{
-        backgroundColor: "#f9f9f9",
         // backgroundImage: 'url("/enquiry-bg.jpg")',
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right center",
