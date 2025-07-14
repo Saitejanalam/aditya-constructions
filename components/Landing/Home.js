@@ -9,6 +9,7 @@ const Home = () => {
 
       <div
         style={{
+          position: "relative", // for overlay positioning
           display: "flex",
           flexWrap: "nowrap",
           gap: "2rem",
@@ -23,8 +24,24 @@ const Home = () => {
           overflow: "hidden",
         }}
       >
+        {/* Background overlay for opacity/blur */}
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backdropFilter: "blur(2px)",
+            zIndex: 0,
+          }}
+        />
+
+        {/* Left Section */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
             flex: "1 1 500px",
             minWidth: "300px",
             display: "flex",
@@ -108,6 +125,8 @@ const Home = () => {
         {/* Right Section */}
         <div
           style={{
+            position: "relative",
+            zIndex: 1,
             flex: "1 1 500px",
             minWidth: "300px",
             display: "flex",
@@ -122,7 +141,7 @@ const Home = () => {
               padding: "2rem",
               borderRadius: "16px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-              backdropFilter: "blur(6px)",
+              backdropFilter: "blur(2px)",
               border: "1px dashed #333",
               maxWidth: "400px",
               width: "100%",
@@ -170,7 +189,6 @@ const Home = () => {
                   fontWeight: "bold",
                   fontSize: "1rem",
                   width: "100px",
-                  alignSelf: "center",
                 }}
               >
                 Submit
