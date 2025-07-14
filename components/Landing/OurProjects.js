@@ -131,7 +131,7 @@ const projectsData = [
 
 const OurProjects = () => {
   return (
-    <section style={{ padding: "2rem", backgroundColor: "#f7f7f7" }}>
+    <section style={{ padding: "2rem"}}>
       <h2
         style={{
           textAlign: "center",
