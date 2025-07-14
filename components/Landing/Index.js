@@ -11,12 +11,9 @@ const Index = () => {
       <main style={{background:'#F4F4F4'}} >
         <Home />
         <About />
+        <OurProjects />
         <Gallery />
         <Contact /> 
-        {/* 
-        <OurProjects />
-        */
-        }
       </main>
     </>
   );
