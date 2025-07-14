@@ -150,7 +150,7 @@ const OurProjects = () => {
           flexWrap: "wrap",
           justifyContent: "left",
           gap: "2rem",
-          margin: "0 150px",
+          margin: "0 180px",
         }}
       >
         {projectsData.map((project, index) => (
