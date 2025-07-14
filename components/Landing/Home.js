@@ -1,35 +1,35 @@
 const Home = () => {
   return (
-    <section
-      style={{
-        // backgroundImage: 'url("/enquiry-bg.jpg")',
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "right center",
-        backgroundSize: "contain",
-      }}
-    >
+    <section>
       <img
         src="/logo-full.png"
         alt="Sri Aditya Developers Logo"
-        style={{ width: "400px", marginBottom: "2rem" }}
+        style={{ width: "300px" }}
       />
 
       <div
         style={{
           display: "flex",
-          flexWrap: "wrap",
+          flexWrap: "nowrap",
+          gap: "2rem",
           justifyContent: "space-between",
-          alignItems: "center",
-          padding: "0rem 4rem",
+          alignItems: "stretch",
+          width: "100%",
+          padding: "0rem 2rem",
+          textAlign: "center",
+          backgroundImage: 'url("/home-bg.png")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          overflow: "hidden",
         }}
       >
-        {/* Left Section */}
         <div
           style={{
             flex: "1 1 500px",
             minWidth: "300px",
-            justifyItems: "center",
-            maxWidth: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
           <h2
@@ -56,11 +56,9 @@ const Home = () => {
               fontSize: "1rem",
               color: "#333",
               marginBottom: "2rem",
-              width: "90%",
-              textAlign: "center",
             }}
           >
-            We Delivery Only excellence and aim to exceed expectations in
+            We Deliver Only excellence and aim to exceed expectations in
             everything we do.
           </p>
 
@@ -75,6 +73,7 @@ const Home = () => {
               padding: "1rem 1.5rem",
               gap: "1.5rem",
               width: "fit-content",
+              alignSelf: "center",
             }}
           >
             <div style={{ fontWeight: 600 }}>
@@ -106,23 +105,27 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Right Section - Enquiry Form */}
+        {/* Right Section */}
         <div
           style={{
-            width: "500px",
+            flex: "1 1 500px",
+            minWidth: "300px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "16px",
           }}
         >
           <div
             style={{
-              flex: "1 1 400px",
-              width: "400px",
-              marginTop: "2rem",
               backgroundColor: "#ffffffcc",
               padding: "2rem",
               borderRadius: "16px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
               backdropFilter: "blur(6px)",
               border: "1px dashed #333",
+              maxWidth: "400px",
+              width: "100%",
             }}
           >
             <h3
@@ -131,6 +134,7 @@ const Home = () => {
                 marginBottom: "1rem",
                 fontSize: "1.5rem",
                 fontWeight: "bold",
+                textAlign: "center",
               }}
             >
               ENQUIRY FORM
@@ -166,6 +170,7 @@ const Home = () => {
                   fontWeight: "bold",
                   fontSize: "1rem",
                   width: "100px",
+                  alignSelf: "center",
                 }}
               >
                 Submit
