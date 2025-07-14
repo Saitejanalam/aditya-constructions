@@ -16,31 +16,28 @@ const AboutUs = () => {
           justifyContent: "center",
         }}
       >
-        {/* Video Section */}
-        <div style={{ flex: "1 1 400px" }}>
-          <video
-            width="100%"
-            controls
-            poster="/about-thumbnail.jpg" // optional: provide a fallback thumbnail
-            style={{
-              borderRadius: "30px",
-              objectFit: "cover",
-              width: "100%",
-              height: "100%",
-              maxHeight: "320px",
-            }}
-          >
-            <source src="https://youtu.be/n8yx0nWBF_8?si=-6W6aSkgcprKU8tP" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
+        {/* YouTube iframe with rel=0 to prevent suggested videos */}
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/n8yx0nWBF_8?si=nA3lKn3Xzd-gU8DW&rel=0"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          autoplay
+          style={{
+            borderRadius: "16px",
+          }}
+        ></iframe>
 
         {/* Text Content */}
         <div style={{ flex: "1 1 500px" }}>
-          <h2 style={{ fontSize: "2rem", color: "#003366", marginBottom: "1rem" }}>
+          <h2 style={{ fontSize: "2.2rem", color: "#003366", marginBottom: "1rem", fontWeight: "bold" }}>
             About Our Company
           </h2>
-          <p style={{ fontSize: "1.05rem", lineHeight: "1.8", color: "#555" }}>
+          <p style={{ fontSize: "1.3rem", color: "#555" }}>
             Sri Aditya Developers, the leading developers in Andhra Pradesh & Telangana,
             was founded in 2010 at Kakinada E.G by Satish (Managing Director). Sri Aditya
             Developers has started its journey with the aim of providing excellent

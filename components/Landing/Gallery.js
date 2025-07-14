@@ -13,10 +13,9 @@ const Gallery = () => {
           fontSize: "2rem",
           fontWeight: 600,
           color: "#062c3e",
-          marginBottom: "4rem",
         }}
       >
-        Milestones we’ve reached <br /> in our journey
+        Milestones we've reached <br /> in our journey
       </h2>
 
        <img
