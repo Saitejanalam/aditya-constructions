@@ -16,11 +16,11 @@ const Index = ({ navbarRefs }) => {
   return (
     <>
       <main className="bg-[#F4F4F4]">
-        <section ref={homeRef}><Home /></section>
-        <section ref={aboutRef}><About /></section>
-        <section ref={locationRef}><OurProjects /></section>
-        <section ref={projectRef}><Gallery /></section>
-        <section ref={contactRef}><Contact /></section>
+        <section ref={homeRef} className="scroll-mt-16"><Home /></section>
+        <section ref={aboutRef} className="scroll-mt-16"><About /></section>
+        <section ref={locationRef} className="scroll-mt-16"><OurProjects /></section>
+        <section ref={projectRef} className="scroll-mt-16"><Gallery /></section>
+        <section ref={contactRef} className="scroll-mt-16"><Contact /></section>
       </main>
     </>
   );
