@@ -15,192 +15,53 @@ const Home = () => {
       <img
         src="/logo-full.png"
         alt="Sri Aditya Developers Logo"
-        style={{ width: "300px" }}
+        className="w-[300px]"
       />
 
       <div
-        style={{
-          position: "relative", // for overlay positioning
-          display: "flex",
-          flexWrap: "nowrap",
-          gap: "2rem",
-          justifyContent: "space-between",
-          alignItems: "stretch",
-          width: "100%",
-          padding: "0rem 2rem",
-          textAlign: "center",
-          backgroundImage: 'url("/home-bg.png")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          overflow: "hidden",
-        }}
+        className="relative flex flex-nowrap gap-8 justify-between items-stretch w-full px-8 text-center bg-cover bg-center overflow-hidden"
+        style={{ backgroundImage: 'url("/home-bg.png")' }}
       >
         {/* Background overlay for opacity/blur */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backdropFilter: "blur(2px)",
-            zIndex: 0,
-          }}
-        />
+        <div className="absolute inset-0 backdrop-blur-sm z-0" />
 
         {/* Left Section */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            flex: "1 1 500px",
-            minWidth: "300px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <h2
-            style={{
-              color: "#003A80",
-              fontSize: "2.3rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            DREAM PLOTS/FLOTS/VILLAS
-          </h2>
-          <h1
-            style={{
-              color: "#003A80",
-              fontSize: "4rem",
-              fontWeight: "bold",
-              marginBottom: "1rem",
-            }}
-          >
-            FOR SALE
-          </h1>
-          <p
-            style={{
-              fontSize: "1rem",
-              color: "#333",
-              marginBottom: "2rem",
-            }}
-          >
-            We Deliver Only excellence and aim to exceed expectations in
-            everything we do.
+        <div className="relative z-10 flex-1 min-w-[300px] flex flex-col justify-center">
+          <h2 className="text-[#003A80] text-3xl mb-2 font-semibold">DREAM PLOTS/FLOTS/VILLAS</h2>
+          <h1 className="text-[#003A80] text-5xl font-bold mb-4">FOR SALE</h1>
+          <p className="text-base text-[#333] mb-8">
+            We Deliver Only excellence and aim to exceed expectations in everything we do.
           </p>
 
           {/* Offer Card */}
-          <div
-            style={{
-              background: "linear-gradient(to right, #130cb7, #aa08a4)",
-              color: "white",
-              borderRadius: "16px",
-              display: "flex",
-              alignItems: "center",
-              padding: "1rem 1.5rem",
-              gap: "1.5rem",
-              width: "fit-content",
-              alignSelf: "center",
-            }}
-          >
-            <div style={{ fontWeight: 600 }}>
-              <div style={{ fontSize: "1.1rem" }}>Best Offer</div>
-              <div
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: "bold",
-                  color: "#FFD700",
-                }}
-              >
-                {offer ? offer : '...'} OFF
-              </div>
-              <div style={{ fontSize: "1.1rem" }}>This Month</div>
+          <div className="bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl flex items-center p-6 gap-6 w-fit self-center">
+            <div className="font-semibold">
+              <div className="text-base">Best Offer</div>
+              <div className="text-2xl font-bold text-yellow-400">{offer ? offer : '...'} OFF</div>
+              <div className="text-base">This Month</div>
             </div>
-            <div
-              style={{
-                backgroundColor: "#fff",
-                borderRadius: "12px",
-                padding: "0.5rem 1rem",
-              }}
-            >
+            <div className="bg-white rounded-xl p-2">
               <img
                 src="/nandhaGokulam.png"
                 alt="Nanda Gokulam"
-                style={{ width: "160px", display: "block" }}
+                className="w-40 block"
               />
             </div>
           </div>
         </div>
 
         {/* Right Section */}
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            flex: "1 1 500px",
-            minWidth: "300px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "16px",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#ffffffcc",
-              padding: "2rem",
-              borderRadius: "16px",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-              backdropFilter: "blur(2px)",
-              border: "1px dashed #333",
-              maxWidth: "400px",
-              width: "100%",
-            }}
-          >
-            <h3
-              style={{
-                color: "#003A80",
-                marginBottom: "1rem",
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              ENQUIRY FORM
-            </h3>
-            <form
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-            >
-              <input type="text" placeholder="Name" style={inputStyle} />
-              <input
-                type="text"
-                placeholder="Phone Number"
-                style={inputStyle}
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                style={inputStyle}
-              />
-              <textarea
-                placeholder="Message"
-                rows={3}
-                style={{ ...inputStyle, resize: "none" }}
-              />
+        <div className="relative z-10 flex-1 min-w-[300px] flex justify-center items-center rounded-2xl">
+          <div className="bg-white/80 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-dashed border-[#333] max-w-[400px] w-full">
+            <h3 className="text-[#003A80] mb-4 text-xl font-bold text-center">ENQUIRY FORM</h3>
+            <form className="flex flex-col gap-4">
+              <input type="text" placeholder="Name" className={inputStyle} />
+              <input type="text" placeholder="Phone Number" className={inputStyle} />
+              <input type="email" placeholder="Email Address" className={inputStyle} />
+              <textarea placeholder="Message" rows={3} className={inputStyle + ' resize-none'} />
               <button
                 type="submit"
-                style={{
-                  backgroundColor: "#555",
-                  color: "white",
-                  border: "none",
-                  padding: "0.8rem",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  width: "100px",
-                }}
+                className="bg-gray-700 text-white border-none py-3 rounded-lg cursor-pointer font-bold text-base w-[100px] mx-auto"
               >
                 Submit
               </button>
@@ -212,12 +73,7 @@ const Home = () => {
   );
 };
 
-const inputStyle = {
-  padding: "0.8rem",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  fontSize: "1rem",
-  width: "100%",
-};
+const inputStyle =
+  "py-3 px-4 rounded-lg border border-gray-300 text-base w-full";
 
 export default Home;

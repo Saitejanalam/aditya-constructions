@@ -1,30 +1,12 @@
 const Contact = () => {
   return (
-    <footer
-      style={{
-        backgroundColor: "#003366",
-        color: "#fff",
-        fontFamily: "sans-serif",
-      }}
-    >
-      <div
-        style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1rem" }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "2rem",
-          }}
-        >
+    <footer className="bg-[#003366] text-white font-sans">
+      <div className="max-w-[1200px] mx-auto py-12 px-4">
+        <div className="flex flex-wrap justify-between items-start gap-8">
           {/* Left Section - Message */}
-          <div style={{ flex: "1 1 350px" }}>
-            <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>
-              Contact us now
-            </h2>
-            <p style={{ fontSize: "1.1rem", lineHeight: "1.6" }}>
+          <div className="flex-1 min-w-[350px]">
+            <h2 className="text-3xl mb-4">Contact us now</h2>
+            <p className="text-lg leading-relaxed">
               To learn more about our project or to <br />
               schedule a site visit, get in touch with our <br />
               team today.
@@ -32,68 +14,38 @@ const Contact = () => {
           </div>
 
           {/* Right Section - Contact Info */}
-          <div
-            style={{
-              flex: "1 1 300px",
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="flex-1 min-w-[300px] flex justify-between flex-wrap">
             {/* Address */}
-            <div
-              style={{
-                minWidth: "180px",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="min-w-[180px] flex items-center gap-2 mb-4">
               <img src="/icons/location.png" alt="location" width={24} />
-              <span style={{ fontSize: "1.1rem" }}>
-                Kakinada Office Address
-              </span>
+              <span className="text-lg">Kakinada Office Address</span>
             </div>
           </div>
-          <div
-            style={{
-              flex: "1 1 300px",
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="flex-1 min-w-[300px] flex justify-between flex-wrap">
             {/* Phone */}
-            <div style={{ minWidth: "180px", marginBottom: "1rem" }}>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-              >
+            <div className="min-w-[180px] mb-4">
+              <div className="flex items-center gap-2">
                 <img src="/icons/phone.png" alt="phone" width={24} />
-                <h3 style={{ fontSize: "1.1rem", margin: 0 }}>Call Us</h3>
+                <h3 className="text-lg m-0">Call Us</h3>
               </div>
-              <p style={{ margin: "0.2rem 0 0", paddingLeft:'30px' }}>+91 9912555505</p>
+              <p className="mt-1 mb-0 pl-8">+91 9912555505</p>
             </div>
 
             {/* Email */}
-            <div style={{ minWidth: "180px", marginBottom: "1rem" }}>
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-              >
+            <div className="min-w-[180px] mb-4">
+              <div className="flex items-center gap-2">
                 <img src="/icons/mail.png" alt="mail" width={24} />
-                <h3 style={{ fontSize: "1.1rem", margin: 0 }}>Email</h3>
+                <h3 className="text-lg m-0">Email</h3>
               </div>
-              <p style={{ margin: "0.2rem 0 0", fontSize: "0.95rem",  paddingLeft:'30px' }}>
+              <p className="mt-1 text-base pl-8">
                 sriadityadevelopersofficial@gmail.com
               </p>
             </div>
 
             {/* Social Links */}
-            <div style={{ minWidth: "180px", marginTop: "1rem" }}>
-              <h3 style={{ fontSize: "1.1rem", marginBottom: "0.5rem" }}>
-                Follow us
-              </h3>
-              <div style={{ display: "flex", gap: "0.8rem" }}>
+            <div className="min-w-[180px] mt-4">
+              <h3 className="text-lg mb-2">Follow us</h3>
+              <div className="flex gap-4">
                 <a href="#">
                   <img src="/icons/fb.png" alt="Facebook" width={24} />
                 </a>
@@ -113,15 +65,11 @@ const Contact = () => {
       </div>
 
       {/* Divider */}
-      <div
-        style={{ borderTop: "1px solid #ffffff44", marginTop: "2rem" }}
-      ></div>
+      <div className="border-t border-white/25 my-8"></div>
 
       {/* Copyright */}
-      <div
-        style={{ padding: "1rem", textAlign: "center", fontSize: "0.95rem" }}
-      >
-        <p style={{ margin: 0 }}>
+      <div className="py-4 text-center text-base">
+        <p className="m-0">
           Copyright © 2025 sriadityadevelopers. All rights reserved.
         </p>
       </div>

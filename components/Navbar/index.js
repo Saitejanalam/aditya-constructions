@@ -13,84 +13,44 @@ const Navbar = ({ refs }) => {
     // }
   };
 
-  const navStyle = {
-    backgroundColor: primaryColor,
-    padding: "0.8rem 2rem",
-    color: "white",
-    position: "sticky",
-    top: 0,
-    zIndex: 1000,
-    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-    display: "flex",
-    justifyContent: "end",
-    alignItems: "center",
-  };
-
-  const logoStyle = {
-    height: "48px",
-    width: "48px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    backgroundColor: "white",
-    padding: "2px",
-  };
-
-  const ulStyle = {
-    display: "flex",
-    listStyle: "none",
-    alignItems: "center",
-    margin: 0,
-    padding: 0,
-    gap: "1rem",
-  };
-
-  const liBaseStyle = {
-    cursor: "pointer",
-    fontWeight: 500,
-    fontSize: "0.9rem",
-    padding: "0.4rem 0.6rem",
-    borderRadius: "20px",
-    transition: "all 0.2s ease",
-  };
-
-  const getLiStyle = (label) => ({
-    ...liBaseStyle,
-    backgroundColor: activeSection === label ? accentColor : "transparent",
-    color: activeSection === label ? primaryColor : "white",
-  });
+  const getLiClass = (label) =>
+    `cursor-pointer font-medium text-sm px-3 py-2 rounded-full transition-all duration-200 ${
+      activeSection === label
+        ? "bg-[#F5B041] text-[#003A80]"
+        : "bg-transparent text-white"
+    }`;
 
   return (
-    <nav style={navStyle}>
+    <nav className="bg-[#003A80] py-3 px-8 text-white sticky top-0 z-[1000] shadow-md flex justify-end items-center">
       {/* Logo */}
-
       {/* Navigation Items */}
-      <ul style={ulStyle}>
+      <ul className="flex list-none items-center m-0 p-0 gap-4">
         <li
-          style={getLiStyle("Home")}
+          className={getLiClass("Home")}
           onClick={() => scrollToSection(refs.homeRef, "Home")}
         >
           <strong>Home</strong>
         </li>
         <li
-          style={getLiStyle("About Us")}
+          className={getLiClass("About Us")}
           onClick={() => scrollToSection(refs.projectRef, "About Us")}
         >
           <strong>About Us</strong>
         </li>
         <li
-          style={getLiStyle("Our Projects")}
+          className={getLiClass("Our Projects")}
           onClick={() => scrollToSection(refs.locationRef, "Our Projects")}
         >
           <strong>Our Projects</strong>
         </li>
         <li
-          style={getLiStyle("Gallery")}
+          className={getLiClass("Gallery")}
           onClick={() => scrollToSection(refs.aboutRef, "Gallery")}
         >
           <strong>Gallery</strong>
         </li>
         <li
-          style={getLiStyle("Contact")}
+          className={getLiClass("Contact")}
           onClick={() => scrollToSection(refs.contactRef, "Contact")}
         >
           <strong>Contact</strong>

@@ -1,35 +1,14 @@
 const Gallery = () => {
-
   return (
-    <section
-      style={{
-        padding: "4rem 1rem",
-        textAlign: "center",
-        position: "relative",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: "2rem",
-          fontWeight: 600,
-          color: "#062c3e",
-        }}
-      >
+    <section className="py-16 px-4 text-center relative">
+      <h2 className="text-2xl font-semibold text-[#062c3e] mb-8">
         Milestones we've reached <br /> in our journey
       </h2>
-
-       <img
+      <img
         src="/gallery.png"
         alt="Milestones Timeline"
-        style={{
-          width: "100%",
-          height: "auto",
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "block",
-        }}
+        className="w-full h-auto max-w-[1200px] mx-auto block"
       />
-
     </section>
   );
 };

@@ -1,21 +1,7 @@
 const AboutUs = () => {
   return (
-    <section
-      style={{
-        padding: "4rem 1rem",
-        maxWidth: "1200px",
-        margin: "0 auto",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "2rem",
-          justifyContent: "center",
-        }}
-      >
+    <section className="py-16 px-4 max-w-[1200px] mx-auto">
+      <div className="flex flex-wrap items-center gap-8 justify-center">
         {/* YouTube iframe with rel=0 to prevent suggested videos */}
         <iframe
           width="560"
@@ -27,17 +13,13 @@ const AboutUs = () => {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
           autoPlay
-          style={{
-            borderRadius: "16px",
-          }}
+          className="rounded-2xl"
         ></iframe>
 
         {/* Text Content */}
-        <div style={{ flex: "1 1 500px" }}>
-          <h2 style={{ fontSize: "2.2rem", color: "#003366", marginBottom: "1rem", fontWeight: "bold" }}>
-            About Our Company
-          </h2>
-          <p style={{ fontSize: "1.3rem", color: "#555" }}>
+        <div className="flex-1 min-w-[300px]">
+          <h2 className="text-3xl text-[#003366] mb-4 font-bold">About Our Company</h2>
+          <p className="text-xl text-gray-600">
             Sri Aditya Developers, the leading developers in Andhra Pradesh & Telangana,
             was founded in 2010 at Kakinada E.G by Satish (Managing Director). Sri Aditya
             Developers has started its journey with the aim of providing excellent
@@ -46,17 +28,7 @@ const AboutUs = () => {
           </p>
           <a
             href="#"
-            style={{
-              display: "inline-block",
-              marginTop: "1.5rem",
-              padding: "0.75rem 2rem",
-              fontSize: "1.1rem",
-              fontWeight: "500",
-              color: "#fff",
-              background: "linear-gradient(to right, #2e00ff, #a11cf2)",
-              borderRadius: "15px",
-              textDecoration: "none",
-            }}
+            className="inline-block mt-6 py-3 px-8 text-lg font-medium text-white bg-gradient-to-r from-[#2e00ff] to-[#a11cf2] rounded-[15px] no-underline"
           >
             Read More
           </a>

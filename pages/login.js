@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 const EyeIcon = ({ open }) => (
   open ? (
-    <svg height="22" width="22" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+    <svg height="22" width="22" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
       <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
       <circle cx="12" cy="12" r="3"/>
     </svg>
   ) : (
-    <svg height="22" width="22" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+    <svg height="22" width="22" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="block">
       <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.81 21.81 0 0 1 5.06-6.06"/>
       <path d="M1 1l22 22"/>
       <path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/>
@@ -49,78 +49,29 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(120deg, #130cb7 0%, #aa08a4 100%)',
-    }}>
-      <div style={{
-        background: '#fff',
-        padding: '2.5rem 2rem',
-        borderRadius: 16,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
-        minWidth: 540,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}>
-        <img src="/logo-full.png" alt="Logo" style={{ width: 420, marginBottom: 24 }} />
-        <h1 style={{ color: '#003A80', marginBottom: 24, fontSize: 28, fontWeight: 700, letterSpacing: 1 }}>Admin Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#130cb7] to-[#aa08a4]">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl min-w-[540px] flex flex-col items-center">
+        <img src="/logo-full.png" alt="Logo" className="w-[420px] mb-6" />
+        <h1 className="text-[#003A80] mb-6 text-2xl font-bold tracking-wide">Admin Login</h1>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '0.9rem',
-            marginBottom: 18,
-            borderRadius: 8,
-            border: '1px solid #ccc',
-            fontSize: 16,
-            outline: 'none',
-            transition: 'border 0.2s',
-          }}
+          className="w-full py-3 px-4 mb-4 rounded-lg border border-gray-300 text-base outline-none transition-colors"
         />
-        <div style={{ position: 'relative', width: '100%', marginBottom: 24 }}>
+        <div className="relative w-full mb-6">
           <input
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.9rem',
-              borderRadius: 8,
-              border: '1px solid #ccc',
-              fontSize: 16,
-              outline: 'none',
-              transition: 'border 0.2s',
-              paddingRight: 40,
-            }}
+            className="w-full py-3 px-4 rounded-lg border border-gray-300 text-base outline-none transition-colors pr-10"
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              margin: 0,
-              cursor: 'pointer',
-              outline: 'none',
-              height: 28,
-              width: 28,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-none border-none p-0 m-0 cursor-pointer outline-none h-7 w-7 flex items-center justify-center"
             tabIndex={-1}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
@@ -130,26 +81,11 @@ const LoginPage = () => {
         <button
           onClick={handleLogin}
           disabled={loading}
-          style={{
-            width: '100%',
-            background: 'linear-gradient(90deg, #130cb7 0%, #aa08a4 100%)',
-            color: 'white',
-            border: 'none',
-            padding: '0.9rem',
-            borderRadius: 8,
-            fontWeight: 700,
-            fontSize: 18,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            boxShadow: '0 2px 8px #0002',
-            letterSpacing: 1,
-            marginBottom: 8,
-            transition: 'background 0.2s',
-            opacity: loading ? 0.7 : 1,
-          }}
+          className={`w-full bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-3 rounded-lg font-bold text-lg cursor-pointer shadow-md tracking-wide mb-2 transition-opacity ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
         >
           {loading ? 'Logging in...' : 'Login'}
         </button>
-        {error && <div style={{ color: 'red', marginTop: 12, fontWeight: 500 }}>{error}</div>}
+        {error && <div className="text-red-600 mt-3 font-semibold">{error}</div>}
       </div>
     </div>
   );

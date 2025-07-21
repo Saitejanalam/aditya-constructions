@@ -2,8 +2,6 @@ import Head from "next/head";
 import Navbar from "../Navbar";
 
 const Layout = ({ children }) => {
-    console.log("children",children);
-    
   return (
     <>
       <Head>
@@ -13,7 +11,7 @@ const Layout = ({ children }) => {
         <meta name="author" content="Sri Aditya Developers" />
       </Head>
 
-      <div style={{ fontFamily: "sans-serif", backgroundColor: "#f4f8fc", color: "#003A80" }}>
+      <div className="font-sans bg-[#f4f8fc] text-[#003A80]">
         <Navbar />
         {children}
       </div>

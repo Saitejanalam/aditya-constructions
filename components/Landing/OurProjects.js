@@ -131,145 +131,50 @@ const projectsData = [
 
 const OurProjects = () => {
   return (
-    <section style={{ padding: "2rem"}}>
-      <h2
-        style={{
-          textAlign: "center",
-          color: "#003A80",
-          fontSize: "2.3rem",
-          fontWeight: "bold",
-          marginBottom: "2rem",
-        }}
-      >
-        Our Projects
-      </h2>
+    <section className="py-8 px-8">
+      <h2 className="text-center text-[#003A80] text-3xl font-bold mb-8">Our Projects</h2>
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "left",
-          gap: "2rem",
-          margin: "0 180px",
-        }}
-      >
+      <div className="flex flex-wrap justify-start gap-8 mx-[180px]">
         {projectsData.map((project, index) => (
           <div
             key={index}
-            style={{
-              width: "360px",
-              backgroundColor: "#eee",
-              borderRadius: "16px",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
+            className="w-[360px] bg-gray-200 rounded-2xl overflow-hidden flex flex-col justify-between"
           >
             {/* Image */}
-            <div
-              style={{
-                height: "180px",
-                backgroundColor: "#ccc",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="h-[180px] bg-gray-300 flex items-center justify-center">
               {project.image ? (
                 <img
                   src={project.image}
                   alt={project.name}
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
+                  className="max-w-full max-h-full object-contain"
                 />
               ) : (
-                <div style={{ color: "#777", fontSize: "14px" }}>No Image</div>
+                <div className="text-gray-500 text-sm">No Image</div>
               )}
             </div>
 
             {/* Content */}
-            <div style={{ padding: "1rem" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                <h3
-                  style={{
-                    margin: 0,
-                    color: "#003A80",
-                    fontSize: "1.1rem",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {project.name}
-                </h3>
-                <div
-                  style={{
-                    background: "linear-gradient(to right, #5f0aff, #9d00ff)",
-                    color: "white",
-                    fontWeight: "bold",
-                    padding: "0.2rem 0.6rem",
-                    borderRadius: "8px",
-                    fontSize: "0.8rem",
-                  }}
-                >
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="m-0 text-[#003A80] text-base font-bold">{project.name}</h3>
+                <div className="bg-gradient-to-r from-[#5f0aff] to-[#9d00ff] text-white font-bold px-2 py-1 rounded-lg text-xs">
                   {project.price}
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "0.5rem",
-                }}
-              >
+              <div className="flex items-center mb-2">
                 <img
                   src="/icons/pin.png"
                   alt="location"
-                  style={{ width: "16px", marginRight: "0.4rem" }}
+                  className="w-4 mr-2"
                 />
-                <span style={{ fontSize: "0.9rem", color: "#333" }}>
-                  {project.location}
-                </span>
+                <span className="text-sm text-[#333]">{project.location}</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: "0.9rem",
-                    color: "#333",
-                    minHeight: "3rem",
-                  }}
-                >
-                  {project.description}
-                </p>
+              <div className="flex justify-between items-center">
+                <p className="text-sm text-[#333] min-h-[3rem]">{project.description}</p>
                 {project.description === "For More Details" && (
                   <button
-                    style={{
-                      background: "linear-gradient(to right, #5f0aff, #9d00ff)",
-                      color: "white",
-                      border: "none",
-                      padding: "0.4rem 0.8rem",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                      fontSize: "0.85rem",
-                      float: "right",
-                    }}
+                    className="bg-gradient-to-r from-[#5f0aff] to-[#9d00ff] text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm float-right"
                   >
                     {project.buttonText}
                   </button>
