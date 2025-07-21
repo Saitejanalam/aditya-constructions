@@ -1,4 +1,15 @@
+import { useEffect, useState } from 'react';
+
 const Home = () => {
+  const [offer, setOffer] = useState('');
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+
+  useEffect(() => {
+    fetch(`${apiBase}/api/home/offer`)
+      .then(res => res.json())
+      .then(data => setOffer(data.offer || ''));
+  }, [apiBase]);
+
   return (
     <section>
       <img
@@ -102,7 +113,7 @@ const Home = () => {
                   color: "#FFD700",
                 }}
               >
-                30% OFF
+                {offer ? offer : '...'} OFF
               </div>
               <div style={{ fontSize: "1.1rem" }}>This Month</div>
             </div>
