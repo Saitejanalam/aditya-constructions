@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Navbar from "../Navbar";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, navbarRefs }) => {
   return (
     <>
       <Head>
@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
       </Head>
 
       <div className="font-sans bg-[#f4f8fc] text-[#003A80]">
-        <Navbar />
+        <Navbar refs={navbarRefs} />
         {children}
       </div>
     </>

@@ -7,10 +7,10 @@ const Navbar = ({ refs }) => {
   const [activeSection, setActiveSection] = useState("Home");
 
   const scrollToSection = (ref, label) => {
-    // if (ref?.current) {
-    //   ref.current.scrollIntoView({ behavior: "smooth" });
-    //   setActiveSection(label);
-    // }
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+      setActiveSection(label);
+    }
   };
 
   const getLiClass = (label) =>
@@ -33,7 +33,7 @@ const Navbar = ({ refs }) => {
         </li>
         <li
           className={getLiClass("About Us")}
-          onClick={() => scrollToSection(refs.projectRef, "About Us")}
+          onClick={() => scrollToSection(refs.aboutRef, "About Us")}
         >
           <strong>About Us</strong>
         </li>
@@ -45,7 +45,7 @@ const Navbar = ({ refs }) => {
         </li>
         <li
           className={getLiClass("Gallery")}
-          onClick={() => scrollToSection(refs.aboutRef, "Gallery")}
+          onClick={() => scrollToSection(refs.projectRef, "Gallery")}
         >
           <strong>Gallery</strong>
         </li>

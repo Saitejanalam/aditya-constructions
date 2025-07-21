@@ -19,11 +19,10 @@ const Home = () => {
       />
 
       <div
-        className="relative flex flex-nowrap gap-8 justify-between items-stretch w-full px-8 text-center bg-cover bg-center overflow-hidden"
-        style={{ backgroundImage: 'url("/home-bg.png")' }}
+        className="relative flex flex-nowrap gap-8 justify-between items-stretch w-full px-8 text-center bg-[url('/home-bg.png')] bg-cover bg-center overflow-hidden"
       >
         {/* Background overlay for opacity/blur */}
-        <div className="absolute inset-0 backdrop-blur-sm z-0" />
+        <div className="absolute inset-0 backdrop-blur-[2px] z-0" />
 
         {/* Left Section */}
         <div className="relative z-10 flex-1 min-w-[300px] flex flex-col justify-center">
