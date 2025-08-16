@@ -2,12 +2,28 @@ import { useEffect, useState } from 'react';
 
 const Home = () => {
   const [offer, setOffer] = useState('');
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+  const [imageUrl, setImageUrl] = useState('/nandhaGokulam.png');
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+  
+  // Helper function to get the correct image URL
+  const getImageUrl = (url) => {
+    if (!url) return '/nandhaGokulam.png';
+    if (url.startsWith('http')) return url; // Full URL
+    if (url.startsWith('/uploads/')) {
+      // For uploaded images, use the backend server URL
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+      return `${backendUrl}${url}`;
+    }
+    return url; // Default image or other relative paths
+  };
 
   useEffect(() => {
     fetch(`${apiBase}/api/home/offer`)
       .then(res => res.json())
-      .then(data => setOffer(data.offer || ''));
+      .then(data => {
+        setOffer(data.offer || '');
+        setImageUrl(data.imageUrl || '/nandhaGokulam.png');
+      });
   }, [apiBase]);
 
   return (
@@ -41,9 +57,12 @@ const Home = () => {
             </div>
             <div className="bg-white rounded-xl p-2">
               <img
-                src="/nandhaGokulam.png"
+                src={getImageUrl(imageUrl)}
                 alt="Nanda Gokulam"
                 className="w-40 block"
+                onError={(e) => {
+                  e.target.src = '/nandhaGokulam.png';
+                }}
               />
             </div>
           </div>

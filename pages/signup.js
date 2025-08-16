@@ -28,7 +28,7 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
   const handleSignup = async () => {
     setLoading(true);

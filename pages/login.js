@@ -24,7 +24,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
   const handleLogin = async () => {
     setLoading(true);
