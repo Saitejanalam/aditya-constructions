@@ -4,13 +4,21 @@ import withAuth from '../../components/withAuth';
 function AdminHomeCMS() {
   const [offer, setOffer] = useState('');
   const [imageUrl, setImageUrl] = useState('/nandhaGokulam.png');
+  const [aboutUs, setAboutUs] = useState({
+    youtubeVideoId: 'n8yx0nWBF_8',
+    description: 'Sri Aditya Developers, the leading developers in Andhra Pradesh & Telangana, was founded in 2010 at Kakinada E.G by Satish (Managing Director). Sri Aditya Developers has started its journey with the aim of providing excellent services to all the customers approaching our ventures. Thus we have completed a number of challenging projects successfully with full commitment.'
+  });
   const [newOffer, setNewOffer] = useState('');
+  const [newAboutUs, setNewAboutUs] = useState({
+    youtubeVideoId: '',
+    description: ''
+  });
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
-  
+
   // Helper function to get the correct image URL
   const getImageUrl = (url) => {
     if (!url) return '/nandhaGokulam.png';
@@ -23,13 +31,20 @@ function AdminHomeCMS() {
     return url; // Default image or other relative paths
   };
 
-  // Fetch current offer and image
+  // Fetch current offer, image, and aboutUs data
   useEffect(() => {
     fetch(`${apiBase}/api/home/offer`)
       .then(res => res.json())
       .then(data => {
         setOffer(data.offer || '');
         setImageUrl(data.imageUrl || '/nandhaGokulam.png');
+        if (data.aboutUs) {
+          setAboutUs(data.aboutUs);
+          setNewAboutUs({
+            youtubeVideoId: data.aboutUs.youtubeVideoId || '',
+            description: data.aboutUs.description || ''
+          });
+        }
       });
   }, [apiBase]);
 
@@ -61,25 +76,25 @@ function AdminHomeCMS() {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-    
+
     try {
       // If there's a selected file, upload it first
       if (selectedFile) {
         const formData = new FormData();
         formData.append('image', selectedFile);
-        
+
         const uploadRes = await fetch(`${apiBase}/api/home/upload-image`, {
           method: 'POST',
           body: formData
         });
-        
+
         const uploadData = await uploadRes.json();
         if (!uploadRes.ok) {
           setMessage(uploadData.error || 'Failed to upload image');
           setLoading(false);
           return;
         }
-        
+
         // Update the image URL with the uploaded image
         setImageUrl(uploadData.imageUrl);
         setSelectedFile(null);
@@ -102,8 +117,35 @@ function AdminHomeCMS() {
         }
       }
 
+      // Update aboutUs if provided
+      if ((newAboutUs.youtubeVideoId && newAboutUs.youtubeVideoId !== aboutUs.youtubeVideoId) ||
+        (newAboutUs.description && newAboutUs.description !== aboutUs.description)) {
+        const res = await fetch(`${apiBase}/api/home/offer`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            aboutUs: {
+              youtubeVideoId: newAboutUs.youtubeVideoId || aboutUs.youtubeVideoId,
+              description: newAboutUs.description || aboutUs.description
+            }
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setAboutUs(data.aboutUs);
+        } else {
+          setMessage(data.error || 'Failed to update AboutUs');
+          setLoading(false);
+          return;
+        }
+      }
+
       setMessage('Home section updated successfully!');
       setNewOffer('');
+      setNewAboutUs({
+        youtubeVideoId: aboutUs.youtubeVideoId,
+        description: aboutUs.description
+      });
     } catch (err) {
       setMessage('Server error');
     }
@@ -127,7 +169,7 @@ function AdminHomeCMS() {
           onClick={handleLogout}
           className="flex items-center bg-none border-none text-white font-semibold text-base cursor-pointer gap-2 p-2 hover:opacity-80"
         >
-          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
           Logout
         </button>
       </nav>
@@ -137,7 +179,7 @@ function AdminHomeCMS() {
         <div className="flex items-center mb-4">
           <div className="text-2xl font-bold text-[#003A80] text-left flex-1">Home Section</div>
         </div>
-        
+
         {/* Current Values Display */}
         <div className="my-8 p-6 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl text-center">
           <div className="text-lg font-semibold mb-4">Current Values</div>
@@ -148,13 +190,13 @@ function AdminHomeCMS() {
             </div>
             <div>
               <div className="text-sm font-medium">Image</div>
-                              <div className="text-xs break-all">
-                  <img src={getImageUrl(imageUrl)} alt="Image" className="w-100 h-20 object-cover rounded" />
-                </div>
+              <div className="text-xs break-all">
+                <img src={getImageUrl(imageUrl)} alt="Image" className="w-100 h-20 object-cover rounded" />
+              </div>
             </div>
           </div>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label className="font-medium">Update Offer</label>
@@ -166,7 +208,7 @@ function AdminHomeCMS() {
               className="py-3 px-4 rounded-lg border border-gray-300 text-base w-full mt-1"
             />
           </div>
-          
+
           <div>
             <label className="font-medium">Upload New Image</label>
             <input
@@ -189,11 +231,52 @@ function AdminHomeCMS() {
               </div>
             )}
           </div>
-          
+
           <button type="submit" disabled={loading || uploadLoading} className="bg-[#003A80] text-white border-none py-3 rounded-lg font-bold text-base cursor-pointer disabled:opacity-60">
             {loading ? 'Updating...' : 'Update Home Section'}
           </button>
           {message && <div className={`mt-3 ${message.includes('updated') ? 'text-green-600' : 'text-red-600'}`}>{message}</div>}
+        </form>
+      </div>
+
+      {/* AboutUs Section Card */}
+      <div className="max-w-lg mx-auto p-6 bg-[#f9f9f9] rounded-2xl shadow-md mt-8">
+        <div className="flex items-center mb-4">
+          <div className="text-2xl font-bold text-[#003A80] text-left flex-1">About Us Section</div>
+        </div>
+
+        {/* Current Values Display */}
+        <div className="my-8 p-6 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl text-center">
+          <div className="text-lg font-semibold mb-4">Current Values</div>
+          <div className="grid grid-cols-1 gap-4">
+
+            <div>
+              <div className="text-sm font-medium">Description</div>
+              <div className="text-xs break-all max-h-20 overflow-y-auto">
+                {aboutUs.description || '...'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
+          <div>
+            <label className="font-medium">Description</label>
+            <textarea
+              value={newAboutUs.description}
+              onChange={e => setNewAboutUs(prev => ({ ...prev, description: e.target.value }))}
+              placeholder="Enter company description"
+              rows={4}
+              className="py-3 px-4 rounded-lg border border-gray-300 text-base w-full mt-1 resize-none"
+            />
+            <div className="text-xs text-gray-500 mt-1">
+              Update the company description that appears in the About Us section
+            </div>
+          </div>
+          <button type="submit" disabled={loading || uploadLoading} className="bg-[#003A80] text-white border-none py-3 rounded-lg font-bold text-base cursor-pointer disabled:opacity-60">
+            {loading ? 'Updating...' : 'Update Home Section'}
+          </button>
         </form>
       </div>
     </div>
