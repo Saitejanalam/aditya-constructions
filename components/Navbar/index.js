@@ -55,6 +55,11 @@ const Navbar = ({ refs }) => {
         >
           <strong>Contact</strong>
         </li>
+        <li className="cursor-pointer font-medium text-sm px-3 py-2 rounded-full transition-all duration-200 bg-[#F5B041] text-[#003A80] hover:bg-[#e6a63a]">
+          <a href="/signup" className="no-underline">
+            <strong>Sign Up</strong>
+          </a>
+        </li>
       </ul>
     </nav>
   );
