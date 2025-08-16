@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import withAuth from '../../components/withAuth';
+import Header from './components/Header';
+import Stats from './components/Stats';
+import HomeSection from './components/HomeSection';
+import AboutUsSection from './components/AboutUsSection';
 
 function AdminHomeCMS() {
   const [offer, setOffer] = useState('');
   const [imageUrl, setImageUrl] = useState('/nandhaGokulam.png');
   const [aboutUs, setAboutUs] = useState({
-    youtubeVideoId: 'n8yx0nWBF_8',
     description: 'Sri Aditya Developers, the leading developers in Andhra Pradesh & Telangana, was founded in 2010 at Kakinada E.G by Satish (Managing Director). Sri Aditya Developers has started its journey with the aim of providing excellent services to all the customers approaching our ventures. Thus we have completed a number of challenging projects successfully with full commitment.'
   });
   const [newOffer, setNewOffer] = useState('');
   const [newAboutUs, setNewAboutUs] = useState({
-    youtubeVideoId: '',
     description: ''
   });
   const [selectedFile, setSelectedFile] = useState(null);
@@ -41,7 +43,6 @@ function AdminHomeCMS() {
         if (data.aboutUs) {
           setAboutUs(data.aboutUs);
           setNewAboutUs({
-            youtubeVideoId: data.aboutUs.youtubeVideoId || '',
             description: data.aboutUs.description || ''
           });
         }
@@ -117,15 +118,13 @@ function AdminHomeCMS() {
         }
       }
 
-      // Update aboutUs if provided
-      if ((newAboutUs.youtubeVideoId && newAboutUs.youtubeVideoId !== aboutUs.youtubeVideoId) ||
-        (newAboutUs.description && newAboutUs.description !== aboutUs.description)) {
+            // Update aboutUs if provided
+      if (newAboutUs.description && newAboutUs.description !== aboutUs.description) {
         const res = await fetch(`${apiBase}/api/home/offer`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+                    body: JSON.stringify({ 
             aboutUs: {
-              youtubeVideoId: newAboutUs.youtubeVideoId || aboutUs.youtubeVideoId,
               description: newAboutUs.description || aboutUs.description
             }
           })
@@ -143,7 +142,6 @@ function AdminHomeCMS() {
       setMessage('Home section updated successfully!');
       setNewOffer('');
       setNewAboutUs({
-        youtubeVideoId: aboutUs.youtubeVideoId,
         description: aboutUs.description
       });
     } catch (err) {
@@ -159,125 +157,42 @@ function AdminHomeCMS() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f6fa]">
-      {/* Navbar */}
-      <nav className="w-full h-16 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] flex items-center justify-between px-8 shadow-md mb-8">
-        <div className="flex items-center">
-          <img src="/logo-full.png" alt="Logo" className="h-10 mr-3" />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header */}
+      <Header onLogout={handleLogout} />
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Stats Overview */}
+        <Stats offer={offer} imageUrl={imageUrl} aboutUs={aboutUs} />
+
+        {/* Content Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Home Section */}
+          <HomeSection
+            offer={offer}
+            imageUrl={imageUrl}
+            newOffer={newOffer}
+            setNewOffer={setNewOffer}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+            loading={loading}
+            uploadLoading={uploadLoading}
+            message={message}
+            onUpdate={handleSubmit}
+            getImageUrl={getImageUrl}
+          />
+
+          {/* About Us Section */}
+          <AboutUsSection
+            aboutUs={aboutUs}
+            newAboutUs={newAboutUs}
+            setNewAboutUs={setNewAboutUs}
+            loading={loading}
+            message={message}
+            onUpdate={handleSubmit}
+          />
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center bg-none border-none text-white font-semibold text-base cursor-pointer gap-2 p-2 hover:opacity-80"
-        >
-          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
-          Logout
-        </button>
-      </nav>
-
-      {/* Home Section Card */}
-      <div className="max-w-lg mx-auto p-6 bg-[#f9f9f9] rounded-2xl shadow-md">
-        <div className="flex items-center mb-4">
-          <div className="text-2xl font-bold text-[#003A80] text-left flex-1">Home Section</div>
-        </div>
-
-        {/* Current Values Display */}
-        <div className="my-8 p-6 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl text-center">
-          <div className="text-lg font-semibold mb-4">Current Values</div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-sm font-medium">Offer</div>
-              <div className="text-2xl font-bold text-yellow-400">{offer ? offer : '...'}</div>
-            </div>
-            <div>
-              <div className="text-sm font-medium">Image</div>
-              <div className="text-xs break-all">
-                <img src={getImageUrl(imageUrl)} alt="Image" className="w-100 h-20 object-cover rounded" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="font-medium">Update Offer</label>
-            <input
-              type="text"
-              value={newOffer}
-              onChange={e => setNewOffer(e.target.value)}
-              placeholder="e.g. 40%"
-              className="py-3 px-4 rounded-lg border border-gray-300 text-base w-full mt-1"
-            />
-          </div>
-
-          <div>
-            <label className="font-medium">Upload New Image</label>
-            <input
-              type="file"
-              accept=".png,.jpg,.jpeg"
-              onChange={handleImageUpload}
-              className="py-3 px-4 rounded-lg border border-gray-300 text-base w-full mt-1"
-            />
-            <div className="text-xs text-gray-500 mt-1">
-              Only PNG, JPG, and JPEG files are allowed. Max size: 5MB.
-            </div>
-            {selectedFile && (
-              <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-lg">
-                <div className="text-sm text-green-800">
-                  Selected: {selectedFile.name}
-                </div>
-                <div className="text-xs text-green-600">
-                  Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                </div>
-              </div>
-            )}
-          </div>
-
-          <button type="submit" disabled={loading || uploadLoading} className="bg-[#003A80] text-white border-none py-3 rounded-lg font-bold text-base cursor-pointer disabled:opacity-60">
-            {loading ? 'Updating...' : 'Update Home Section'}
-          </button>
-          {message && <div className={`mt-3 ${message.includes('updated') ? 'text-green-600' : 'text-red-600'}`}>{message}</div>}
-        </form>
-      </div>
-
-      {/* AboutUs Section Card */}
-      <div className="max-w-lg mx-auto p-6 bg-[#f9f9f9] rounded-2xl shadow-md mt-8">
-        <div className="flex items-center mb-4">
-          <div className="text-2xl font-bold text-[#003A80] text-left flex-1">About Us Section</div>
-        </div>
-
-        {/* Current Values Display */}
-        <div className="my-8 p-6 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl text-center">
-          <div className="text-lg font-semibold mb-4">Current Values</div>
-          <div className="grid grid-cols-1 gap-4">
-
-            <div>
-              <div className="text-sm font-medium">Description</div>
-              <div className="text-xs break-all max-h-20 overflow-y-auto">
-                {aboutUs.description || '...'}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
-          <div>
-            <label className="font-medium">Description</label>
-            <textarea
-              value={newAboutUs.description}
-              onChange={e => setNewAboutUs(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Enter company description"
-              rows={4}
-              className="py-3 px-4 rounded-lg border border-gray-300 text-base w-full mt-1 resize-none"
-            />
-            <div className="text-xs text-gray-500 mt-1">
-              Update the company description that appears in the About Us section
-            </div>
-          </div>
-          <button type="submit" disabled={loading || uploadLoading} className="bg-[#003A80] text-white border-none py-3 rounded-lg font-bold text-base cursor-pointer disabled:opacity-60">
-            {loading ? 'Updating...' : 'Update Home Section'}
-          </button>
-        </form>
       </div>
     </div>
   );
