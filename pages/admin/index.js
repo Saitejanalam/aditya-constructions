@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Stats from './components/Stats';
 import HomeSection from './components/HomeSection';
 import AboutUsSection from './components/AboutUsSection';
+import ProjectsSection from './components/ProjectsSection';
 
 function AdminHomeCMS() {
   const [offer, setOffer] = useState('');
@@ -167,7 +168,7 @@ function AdminHomeCMS() {
         <Stats offer={offer} imageUrl={imageUrl} aboutUs={aboutUs} />
 
         {/* Content Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Home Section */}
           <HomeSection
             offer={offer}
@@ -193,6 +194,9 @@ function AdminHomeCMS() {
             onUpdate={handleSubmit}
           />
         </div>
+
+        {/* Projects Section */}
+        <ProjectsSection />
       </div>
     </div>
   );
