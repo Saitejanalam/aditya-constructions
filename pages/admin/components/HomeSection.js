@@ -16,7 +16,7 @@ const HomeSection = ({
   const [localSelectedFile, setLocalSelectedFile] = useState(null);
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e?.target?.files[0];
     if (!file) return;
 
     // Validate file type
