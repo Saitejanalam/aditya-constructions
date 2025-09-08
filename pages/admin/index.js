@@ -18,7 +18,8 @@ function AdminHomeCMS() {
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [homeLoading, setHomeLoading] = useState(false);
+  const [aboutUsLoading, setAboutUsLoading] = useState(false);
   const [homeMessage, setHomeMessage] = useState('');
   const [aboutUsMessage, setAboutUsMessage] = useState('');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
@@ -79,7 +80,7 @@ function AdminHomeCMS() {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
-    setLoading(true);
+    setHomeLoading(true);
     setHomeMessage('');
 
     try {
@@ -99,7 +100,7 @@ function AdminHomeCMS() {
         const uploadData = await uploadRes.json();
         if (!uploadRes.ok) {
           setHomeMessage(uploadData.error || 'Failed to upload image');
-          setLoading(false);
+          setHomeLoading(false);
           return;
         }
 
@@ -124,7 +125,7 @@ function AdminHomeCMS() {
           updateMessages.push('offer');
         } else {
           setHomeMessage(data.error || 'Failed to update offer');
-          setLoading(false);
+          setHomeLoading(false);
           return;
         }
       }
@@ -135,13 +136,16 @@ function AdminHomeCMS() {
           : `Home section ${updateMessages.join(' and ')} updated successfully!`;
         setHomeMessage(message);
         setNewOffer('');
+        setTimeout(() => {
+          setHomeMessage('');
+        }, 3000);
       } else {
         setHomeMessage('No changes detected. Please make changes before updating.');
       }
     } catch (err) {
       setHomeMessage('Server error occurred while updating home section');
     }
-    setLoading(false);
+    setHomeLoading(false);
   };
 
   // Handle about us section update
@@ -149,7 +153,7 @@ function AdminHomeCMS() {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
-    setLoading(true);
+    setAboutUsLoading(true);
     setAboutUsMessage('');
 
     try {
@@ -173,16 +177,19 @@ function AdminHomeCMS() {
           });
         } else {
           setAboutUsMessage(data.error || 'Failed to update About Us section');
-          setLoading(false);
+          setAboutUsLoading(false);
           return;
         }
+        setTimeout(() => {
+          setAboutUsMessage('');
+        }, 3000);
       } else {
         setAboutUsMessage('No changes detected. Please make changes before updating.');
       }
     } catch (err) {
       setAboutUsMessage('Server error occurred while updating About Us section');
     }
-    setLoading(false);
+    setAboutUsLoading(false);
   };
 
   // Handle logout
@@ -211,7 +218,7 @@ function AdminHomeCMS() {
             setNewOffer={setNewOffer}
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}
-            loading={loading}
+            loading={homeLoading}
             uploadLoading={uploadLoading}
             message={homeMessage}
             onUpdate={handleHomeUpdate}
@@ -223,7 +230,7 @@ function AdminHomeCMS() {
             aboutUs={aboutUs}
             newAboutUs={newAboutUs}
             setNewAboutUs={setNewAboutUs}
-            loading={loading}
+            loading={aboutUsLoading}
             message={aboutUsMessage}
             onUpdate={handleAboutUsUpdate}
           />
