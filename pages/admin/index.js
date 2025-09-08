@@ -19,7 +19,8 @@ function AdminHomeCMS() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [homeMessage, setHomeMessage] = useState('');
+  const [aboutUsMessage, setAboutUsMessage] = useState('');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
   // Helper function to get the correct image URL
@@ -59,27 +60,32 @@ function AdminHomeCMS() {
     // Validate file type
     const validTypes = ['image/png', 'image/jpg', 'image/jpeg'];
     if (!validTypes.includes(file.type)) {
-      setMessage('Only PNG, JPG, and JPEG files are allowed!');
+      setHomeMessage('Only PNG, JPG, and JPEG files are allowed!');
       return;
     }
 
     // Validate file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
-      setMessage('File size must be less than 5MB!');
+      setHomeMessage('File size must be less than 5MB!');
       return;
     }
 
     setSelectedFile(file);
-    setMessage('');
+    setHomeMessage('');
   };
 
-  // Handle offer and image update
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Handle home section update (offer and image)
+  const handleHomeUpdate = async (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     setLoading(true);
-    setMessage('');
+    setHomeMessage('');
 
     try {
+      let hasUpdates = false;
+      let updateMessages = [];
+
       // If there's a selected file, upload it first
       if (selectedFile) {
         const formData = new FormData();
@@ -92,7 +98,7 @@ function AdminHomeCMS() {
 
         const uploadData = await uploadRes.json();
         if (!uploadRes.ok) {
-          setMessage(uploadData.error || 'Failed to upload image');
+          setHomeMessage(uploadData.error || 'Failed to upload image');
           setLoading(false);
           return;
         }
@@ -100,6 +106,8 @@ function AdminHomeCMS() {
         // Update the image URL with the uploaded image
         setImageUrl(uploadData.imageUrl);
         setSelectedFile(null);
+        hasUpdates = true;
+        updateMessages.push('image');
       }
 
       // Update offer if provided
@@ -112,19 +120,45 @@ function AdminHomeCMS() {
         const data = await res.json();
         if (res.ok) {
           setOffer(data.offer);
+          hasUpdates = true;
+          updateMessages.push('offer');
         } else {
-          setMessage(data.error || 'Failed to update offer');
+          setHomeMessage(data.error || 'Failed to update offer');
           setLoading(false);
           return;
         }
       }
 
-            // Update aboutUs if provided
+      if (hasUpdates) {
+        const message = updateMessages.length === 1 
+          ? `Home section ${updateMessages[0]} updated successfully!`
+          : `Home section ${updateMessages.join(' and ')} updated successfully!`;
+        setHomeMessage(message);
+        setNewOffer('');
+      } else {
+        setHomeMessage('No changes detected. Please make changes before updating.');
+      }
+    } catch (err) {
+      setHomeMessage('Server error occurred while updating home section');
+    }
+    setLoading(false);
+  };
+
+  // Handle about us section update
+  const handleAboutUsUpdate = async (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    setLoading(true);
+    setAboutUsMessage('');
+
+    try {
+      // Update aboutUs if provided
       if (newAboutUs.description && newAboutUs.description !== aboutUs.description) {
         const res = await fetch(`${apiBase}/api/home/offer`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
+          body: JSON.stringify({ 
             aboutUs: {
               description: newAboutUs.description || aboutUs.description
             }
@@ -133,20 +167,20 @@ function AdminHomeCMS() {
         const data = await res.json();
         if (res.ok) {
           setAboutUs(data.aboutUs);
+          setAboutUsMessage('About Us section description updated successfully!');
+          setNewAboutUs({
+            description: data.aboutUs.description
+          });
         } else {
-          setMessage(data.error || 'Failed to update AboutUs');
+          setAboutUsMessage(data.error || 'Failed to update About Us section');
           setLoading(false);
           return;
         }
+      } else {
+        setAboutUsMessage('No changes detected. Please make changes before updating.');
       }
-
-      setMessage('Home section updated successfully!');
-      setNewOffer('');
-      setNewAboutUs({
-        description: aboutUs.description
-      });
     } catch (err) {
-      setMessage('Server error');
+      setAboutUsMessage('Server error occurred while updating About Us section');
     }
     setLoading(false);
   };
@@ -179,8 +213,8 @@ function AdminHomeCMS() {
             setSelectedFile={setSelectedFile}
             loading={loading}
             uploadLoading={uploadLoading}
-            message={message}
-            onUpdate={handleSubmit}
+            message={homeMessage}
+            onUpdate={handleHomeUpdate}
             getImageUrl={getImageUrl}
           />
 
@@ -190,8 +224,8 @@ function AdminHomeCMS() {
             newAboutUs={newAboutUs}
             setNewAboutUs={setNewAboutUs}
             loading={loading}
-            message={message}
-            onUpdate={handleSubmit}
+            message={aboutUsMessage}
+            onUpdate={handleAboutUsUpdate}
           />
         </div>
 

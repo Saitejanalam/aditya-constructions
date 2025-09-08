@@ -37,10 +37,6 @@ const HomeSection = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const error = await handleImageUpload(e);
-    if (error) {
-      return error;
-    }
     onUpdate();
   };
 
@@ -75,13 +71,38 @@ const HomeSection = ({
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block font-semibold text-gray-700 mb-2">Update Offer</label>
-          <input
-            type="text"
-            value={newOffer}
-            onChange={e => setNewOffer(e.target.value)}
-            placeholder="e.g. 40% OFF"
-            className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
-          />
+          <div className="relative">
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              value={newOffer.replace(/%/g, '')}
+              onChange={e => {
+                const numericValue = e.target.value;
+                // Only allow numbers and one decimal point
+                if (numericValue === '' || (!isNaN(numericValue) && parseFloat(numericValue) >= 0)) {
+                  setNewOffer(numericValue);
+                }
+              }}
+              onBlur={e => {
+                const value = e.target.value;
+                if (value && !isNaN(value) && parseFloat(value) > 0) {
+                  setNewOffer(value + '%');
+                }
+              }}
+              placeholder="Enter percentage"
+              className="w-full py-3 px-4 pr-8 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all appearance-none"
+              inputMode="numeric"
+              pattern="[0-9]*"
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <span className="text-gray-500 text-base font-medium">%</span>
+            </div>
+          </div>
+          <div className="text-xs text-gray-500 mt-2">
+            Enter a number between 0-100. The % symbol will be added automatically.
+          </div>
         </div>
         
         <div>
