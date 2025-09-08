@@ -207,7 +207,7 @@ const ProjectsSection = () => {
         <h3 className="text-xl font-semibold text-gray-800">Projects Management</h3>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+          className="w-40 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-4 rounded-xl font-bold text-md cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
         >
           {showForm ? 'Cancel' : 'Add New Project'}
         </button>
@@ -302,7 +302,7 @@ const ProjectsSection = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg transition-colors"
+                className="w-40 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-4 rounded-xl font-bold text-md cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
               >
                 {loading ? 'Saving...' : (editingProject ? 'Update Project' : 'Create Project')}
               </button>

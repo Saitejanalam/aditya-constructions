@@ -61,7 +61,7 @@ const HomeSection = ({
               <img 
                 src={getImageUrl(imageUrl)} 
                 alt="Current" 
-                className="w-24 h-24 object-cover rounded-lg border-2 border-white" 
+                className="w-60 h-24 object-cover rounded-lg border-2 border-white" 
               />
             </div>
           </div>
@@ -131,7 +131,7 @@ const HomeSection = ({
         <button 
           type="submit" 
           disabled={loading || uploadLoading} 
-          className="w-full bg-gradient-to-r from-[#003A80] to-[#130cb7] text-white border-none py-4 rounded-xl font-bold text-lg cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
+          className="w-full bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-4 rounded-xl font-bold text-lg cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
         >
           {loading ? '🔄 Updating...' : '💾 Update Home Section'}
         </button>
