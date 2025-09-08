@@ -311,15 +311,41 @@ const ProjectsSection = () => {
                 <label className="block font-semibold text-gray-700 mb-2">
                   Price (INR) *
                 </label>
-                <input
-                  type="text"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  placeholder="₹ 29 Lakhs"
-                  required
-                  className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="price"
+                    value={formData.price.replace(/₹\s*/g, '')}
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      // Remove any existing ₹ symbol and spaces
+                      value = value.replace(/₹\s*/g, '');
+                      // If value is not empty, update the form data
+                      setFormData(prev => ({
+                        ...prev,
+                        price: value
+                      }));
+                    }}
+                    onBlur={(e) => {
+                      const value = e.target.value;
+                      if (value && value.trim() !== '') {
+                        setFormData(prev => ({
+                          ...prev,
+                          price: '₹ ' + value
+                        }));
+                      }
+                    }}
+                    placeholder="Enter amount"
+                    required
+                    className="w-full py-3 px-4 pl-10 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+                  />
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <span className="text-gray-500 text-lg font-bold">₹</span>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500 mt-2">
+                  Enter the amount (e.g., 29 Lakhs) and ₹ symbol will be added automatically
+                </div>
               </div>
             </div>
             <div>
@@ -452,13 +478,13 @@ const ProjectsSection = () => {
                     onClick={() => handleEdit(project)}
                     className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm transition-all duration-300"
                   >
-                    ✏️ Edit
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDelete(project._id)}
                     className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm transition-all duration-300"
                   >
-                    🗑️ Delete
+                    Delete
                   </button>
                 </div>
                 
