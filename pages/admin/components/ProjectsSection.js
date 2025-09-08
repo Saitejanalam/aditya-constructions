@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +26,7 @@ const ProjectsSection = () => {
       const data = await response.json();
       if (response.ok) {
         setProjects(data);
+        setFilteredProjects(data);
       } else {
         setMessage('Failed to fetch projects');
       }
@@ -32,9 +35,36 @@ const ProjectsSection = () => {
     }
   };
 
+  // Filter projects based on search term
+  const filterProjects = (searchTerm) => {
+    if (!searchTerm.trim()) {
+      setFilteredProjects(projects);
+      return;
+    }
+    
+    const filtered = projects.filter(project => 
+      project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.price.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProjects(filtered);
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterProjects(value);
+  };
+
   useEffect(() => {
     fetchProjects();
   }, [apiBase]);
+
+  useEffect(() => {
+    filterProjects(searchTerm);
+  }, [projects, searchTerm]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -221,10 +251,25 @@ const ProjectsSection = () => {
         <div className="text-sm text-gray-500">Manage construction projects</div>
       </div>
       
-      <div className="flex justify-end mb-6">
+      {/* Search and Add Project */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex-1">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="🔍 Search projects by name, location, price, or description..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="w-full py-3 px-4 pl-12 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+            />
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+              <span className="text-gray-400 text-lg">🔍</span>
+            </div>
+          </div>
+        </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="w-50 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-4 rounded-xl font-bold text-md cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
+          className="w-full sm:w-auto bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white border-none py-3 px-6 rounded-xl font-bold text-lg cursor-pointer disabled:opacity-60 hover:shadow-lg transition-all"
         >
           {showForm ? '❌ Cancel' : '➕ Add New Project'}
         </button>
@@ -348,46 +393,78 @@ const ProjectsSection = () => {
       )}
 
       {/* Projects List */}
-      <div className="space-y-6">
-        {projects.map((project) => (
-          <div key={project._id} className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-3">
-                  <h4 className="text-xl font-bold text-[#003A80]">{project.name}</h4>
-                  <span className="bg-gradient-to-r from-[#003A80] to-[#130cb7] text-white px-3 py-1 rounded-full text-sm font-bold">
-                    {project.price}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
-                  <span className="font-medium">📍 {project.location}</span>
-                </div>
-                <p className="text-gray-700 mb-4 leading-relaxed">{project.description}</p>
-                {project.image && (
-                  <div className="mb-4">
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="w-32 h-32 object-cover rounded-xl border-2 border-white shadow-lg"
-                    />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        {filteredProjects.map((project) => (
+          <div
+            key={project._id}
+            className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col justify-between border border-gray-100"
+          >
+            {/* Image */}
+            <div className="h-48 sm:h-52 bg-gray-100 flex items-center justify-center overflow-hidden">
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.name}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <div className="text-center text-gray-500">
+                    <div className="text-4xl mb-2">🏗️</div>
+                    <div className="text-sm">No Image</div>
                   </div>
-                )}
+                </div>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className="p-4 sm:p-5 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-[#003A80] text-base sm:text-lg font-bold leading-tight flex-1 mr-2">
+                  {project.name}
+                </h3>
+                <div className="bg-gradient-to-r from-[#5f0aff] to-[#9d00ff] text-white font-bold px-2 py-1 rounded-lg text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+                  {project.price}
+                </div>
               </div>
-              <div className="flex flex-col gap-3 ml-6">
-                <button
-                  onClick={() => handleEdit(project)}
-                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition-all hover:shadow-lg"
-                >
-                  ✏️ Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(project._id)}
-                  className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition-all hover:shadow-lg"
-                >
-                  🗑️ Delete
-                </button>
+
+              <div className="flex items-center mb-3">
+                <img
+                  src="/icons/pin.png"
+                  alt="location"
+                  className="w-4 h-4 mr-2 flex-shrink-0"
+                />
+                <span className="text-sm text-[#333] leading-tight">
+                  {project.location}
+                </span>
+              </div>
+              
+              <div className="flex-1">
+                <p className="text-sm text-[#333] leading-relaxed mb-3">
+                  {project.description}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-auto space-y-2">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEdit(project)}
+                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm transition-all duration-300"
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(project._id)}
+                    className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm transition-all duration-300"
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
+                
+                {/* Add Image Button */}
                 {!project.image && (
-                  <div className="mt-2">
+                  <div>
                     <input
                       type="file"
                       accept="image/png,image/jpg,image/jpeg"
@@ -397,7 +474,7 @@ const ProjectsSection = () => {
                     />
                     <label
                       htmlFor={`image-${project._id}`}
-                      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition-all hover:shadow-lg cursor-pointer block text-center"
+                      className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white border-none px-3 py-2 rounded-lg cursor-pointer font-bold text-sm transition-all duration-300 block text-center"
                     >
                       📷 Add Image
                     </label>
@@ -405,7 +482,7 @@ const ProjectsSection = () => {
                       <button
                         onClick={() => handleImageUpload(project._id)}
                         disabled={uploadingImage}
-                        className="mt-2 w-full bg-gradient-to-r from-[#003A80] to-[#130cb7] hover:from-[#130cb7] hover:to-[#aa08a4] disabled:opacity-50 text-white px-3 py-2 rounded-xl font-bold text-xs transition-all hover:shadow-lg"
+                        className="mt-2 w-full bg-gradient-to-r from-[#003A80] to-[#130cb7] hover:from-[#130cb7] hover:to-[#aa08a4] disabled:opacity-50 text-white px-3 py-2 rounded-lg font-bold text-sm transition-all duration-300"
                       >
                         {uploadingImage ? '🔄 Uploading...' : '⬆️ Upload'}
                       </button>
@@ -417,8 +494,16 @@ const ProjectsSection = () => {
           </div>
         ))}
         
+        {filteredProjects.length === 0 && projects.length > 0 && (
+          <div className="col-span-full text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <div className="text-xl font-bold text-gray-600 mb-2">No Projects Match Your Search</div>
+            <div className="text-gray-500">Try adjusting your search terms or clear the search to see all projects.</div>
+          </div>
+        )}
+        
         {projects.length === 0 && (
-          <div className="text-center py-12">
+          <div className="col-span-full text-center py-12">
             <div className="text-6xl mb-4">🏗️</div>
             <div className="text-xl font-bold text-gray-600 mb-2">No Projects Found</div>
             <div className="text-gray-500">Create your first project using the "Add New Project" button above.</div>
