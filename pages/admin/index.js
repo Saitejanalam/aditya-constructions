@@ -288,7 +288,7 @@ function AdminHomeCMS() {
         <Stats offer={offer} imageUrl={imageUrl} aboutUs={aboutUs} />
 
         {/* Content Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
           {/* Home Section */}
           <HomeSection
             offer={offer}
