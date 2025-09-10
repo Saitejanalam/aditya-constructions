@@ -5,6 +5,7 @@ import Stats from './components/Stats';
 import HomeSection from './components/HomeSection';
 import AboutUsSection from './components/AboutUsSection';
 import ProjectsSection from './components/ProjectsSection';
+import GallerySection from './components/GallerySection';
 
 function AdminHomeCMS() {
   const [offer, setOffer] = useState('');
@@ -33,6 +34,10 @@ function AdminHomeCMS() {
   const [aboutUsLoading, setAboutUsLoading] = useState(false);
   const [homeMessage, setHomeMessage] = useState('');
   const [aboutUsMessage, setAboutUsMessage] = useState('');
+  const [galleryImage, setGalleryImage] = useState('/gallery.png');
+  const [selectedGalleryFile, setSelectedGalleryFile] = useState(null);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [galleryMessage, setGalleryMessage] = useState('');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
   // Helper function to get the correct image URL
@@ -67,6 +72,9 @@ function AdminHomeCMS() {
             titleLarge: data.hero.titleLarge || '',
             subtitle: data.hero.subtitle || ''
           });
+        }
+        if (data.galleryImage) {
+          setGalleryImage(data.galleryImage);
         }
       });
   }, [apiBase]);
@@ -209,7 +217,7 @@ function AdminHomeCMS() {
       }
 
       if (hasUpdates) {
-        const message = updateMessages.length === 1 
+        const message = updateMessages.length === 1
           ? `Home section ${updateMessages[0]} updated successfully!`
           : `Home section ${updateMessages.join(' and ')} updated successfully!`;
         setHomeMessage(message);
@@ -241,7 +249,7 @@ function AdminHomeCMS() {
         const res = await fetch(`${apiBase}/api/home/offer`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             aboutUs: {
               description: newAboutUs.description || aboutUs.description
             }
@@ -269,6 +277,46 @@ function AdminHomeCMS() {
       setAboutUsMessage('Server error occurred while updating About Us section');
     }
     setAboutUsLoading(false);
+  };
+
+  // Handle gallery section update
+  const handleGalleryUpdate = async (e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    setGalleryLoading(true);
+    setGalleryMessage('');
+
+    try {
+      if (selectedGalleryFile) {
+        const formData = new FormData();
+        formData.append('image', selectedGalleryFile);
+
+        const uploadRes = await fetch(`${apiBase}/api/home/upload-gallery`, {
+          method: 'POST',
+          body: formData
+        });
+
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok) {
+          setGalleryMessage(uploadData.error || 'Failed to upload gallery image');
+          setGalleryLoading(false);
+          return;
+        }
+
+        setGalleryImage(uploadData.galleryImage);
+        setSelectedGalleryFile(null);
+        setGalleryMessage('Gallery image updated successfully!');
+        setTimeout(() => {
+          setGalleryMessage('');
+        }, 3000);
+      } else {
+        setGalleryMessage('Please select an image to upload.');
+      }
+    } catch (err) {
+      setGalleryMessage('Server error occurred while updating gallery image');
+    }
+    setGalleryLoading(false);
   };
 
   // Handle logout
@@ -317,10 +365,23 @@ function AdminHomeCMS() {
             message={aboutUsMessage}
             onUpdate={handleAboutUsUpdate}
           />
+          <ProjectsSection />
+
+
+          {/* Gallery Section */}
+          <GallerySection
+            galleryImage={galleryImage}
+            setGalleryImage={setGalleryImage}
+            loading={galleryLoading}
+            message={galleryMessage}
+            onUpdate={handleGalleryUpdate}
+            getImageUrl={getImageUrl}
+            selectedFile={selectedGalleryFile}
+            setSelectedFile={setSelectedGalleryFile}
+          />
         </div>
 
         {/* Projects Section */}
-        <ProjectsSection />
       </div>
     </div>
   );
