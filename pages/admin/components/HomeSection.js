@@ -11,7 +11,10 @@ const HomeSection = ({
   uploadLoading, 
   message, 
   onUpdate, 
-  getImageUrl 
+  getImageUrl,
+  hero,
+  newHero,
+  setNewHero
 }) => {
   const [localSelectedFile, setLocalSelectedFile] = useState(null);
 
@@ -50,7 +53,22 @@ const HomeSection = ({
       {/* Current Values Display */}
       <div className="mb-8 p-6 bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl">
         <div className="text-lg font-semibold mb-4 text-center">Current Values</div>
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-1 gap-4 text-left">
+            <div>
+              <div className="text-sm font-medium mb-1">Small Title</div>
+              <div className="bg-white/20 rounded-lg px-3 py-2">{hero?.titleSmall || '...'}</div>
+            </div>
+            <div>
+              <div className="text-sm font-medium mb-1">Large Title</div>
+              <div className="bg-white/20 rounded-lg px-3 py-2">{hero?.titleLarge || '...'}</div>
+            </div>
+            <div>
+              <div className="text-sm font-medium mb-1">Subtitle</div>
+              <div className="bg-white/20 rounded-lg px-3 py-2 line-clamp-2">{hero?.subtitle || '...'}</div>
+            </div>
+          </div>
           <div className="text-center">
             <div className="text-sm font-medium mb-2">Current Offer</div>
             <div className="text-3xl font-bold text-yellow-400">{offer || '...'}</div>
@@ -69,6 +87,39 @@ const HomeSection = ({
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Hero Texts */}
+        <div className="grid gap-4">
+          <div className="sm:col-span-2">
+            <label className="block font-semibold text-gray-700 mb-2">Small Title</label>
+            <input
+              type="text"
+              value={newHero.titleSmall}
+              onChange={e => setNewHero(prev => ({ ...prev, titleSmall: e.target.value }))}
+              placeholder="DREAM PLOTS/FLOTS/VILLAS"
+              className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block font-semibold text-gray-700 mb-2">Large Title</label>
+            <input
+              type="text"
+              value={newHero.titleLarge}
+              onChange={e => setNewHero(prev => ({ ...prev, titleLarge: e.target.value }))}
+              placeholder="FOR SALE"
+              className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block font-semibold text-gray-700 mb-2">Subtitle</label>
+            <input
+              type="text"
+              value={newHero.subtitle}
+              onChange={e => setNewHero(prev => ({ ...prev, subtitle: e.target.value }))}
+              placeholder="We Deliver Only excellence and aim to exceed expectations in everything we do."
+              className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
         <div>
           <label className="block font-semibold text-gray-700 mb-2">Update Offer</label>
           <div className="relative">

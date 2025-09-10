@@ -12,9 +12,19 @@ function AdminHomeCMS() {
   const [aboutUs, setAboutUs] = useState({
     description: 'Sri Aditya Developers, the leading developers in Andhra Pradesh & Telangana, was founded in 2010 at Kakinada E.G by Satish (Managing Director). Sri Aditya Developers has started its journey with the aim of providing excellent services to all the customers approaching our ventures. Thus we have completed a number of challenging projects successfully with full commitment.'
   });
+  const [hero, setHero] = useState({
+    titleSmall: 'DREAM PLOTS/FLOTS/VILLAS',
+    titleLarge: 'FOR SALE',
+    subtitle: 'We Deliver Only excellence and aim to exceed expectations in everything we do.'
+  });
   const [newOffer, setNewOffer] = useState('');
   const [newAboutUs, setNewAboutUs] = useState({
     description: ''
+  });
+  const [newHero, setNewHero] = useState({
+    titleSmall: '',
+    titleLarge: '',
+    subtitle: ''
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -47,6 +57,14 @@ function AdminHomeCMS() {
           setAboutUs(data.aboutUs);
           setNewAboutUs({
             description: data.aboutUs.description || ''
+          });
+        }
+        if (data.hero) {
+          setHero(data.hero);
+          setNewHero({
+            titleSmall: data.hero.titleSmall || '',
+            titleLarge: data.hero.titleLarge || '',
+            subtitle: data.hero.subtitle || ''
           });
         }
       });
@@ -130,12 +148,37 @@ function AdminHomeCMS() {
         }
       }
 
+      // Update hero texts if they changed
+      const heroPayload = {
+        titleSmall: newHero.titleSmall && newHero.titleSmall !== hero.titleSmall ? newHero.titleSmall : undefined,
+        titleLarge: newHero.titleLarge && newHero.titleLarge !== hero.titleLarge ? newHero.titleLarge : undefined,
+        subtitle: newHero.subtitle && newHero.subtitle !== hero.subtitle ? newHero.subtitle : undefined
+      };
+      if (heroPayload.titleSmall || heroPayload.titleLarge || heroPayload.subtitle) {
+        const res = await fetch(`${apiBase}/api/home/offer`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hero: heroPayload })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setHero(data.hero);
+          hasUpdates = true;
+          updateMessages.push('texts');
+        } else {
+          setHomeMessage(data.error || 'Failed to update texts');
+          setHomeLoading(false);
+          return;
+        }
+      }
+
       if (hasUpdates) {
         const message = updateMessages.length === 1 
           ? `Home section ${updateMessages[0]} updated successfully!`
           : `Home section ${updateMessages.join(' and ')} updated successfully!`;
         setHomeMessage(message);
         setNewOffer('');
+        // Keep newHero values as-is so the inputs reflect latest text
         setTimeout(() => {
           setHomeMessage('');
         }, 3000);
@@ -223,6 +266,9 @@ function AdminHomeCMS() {
             message={homeMessage}
             onUpdate={handleHomeUpdate}
             getImageUrl={getImageUrl}
+            hero={hero}
+            newHero={newHero}
+            setNewHero={setNewHero}
           />
 
           {/* About Us Section */}

@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 const Home = () => {
   const [offer, setOffer] = useState('');
   const [imageUrl, setImageUrl] = useState('/nandhaGokulam.png');
+  const [hero, setHero] = useState({
+    titleSmall: 'DREAM PLOTS/FLOTS/VILLAS',
+    titleLarge: 'FOR SALE',
+    subtitle: 'We Deliver Only excellence and aim to exceed expectations in everything we do.'
+  });
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   
   // Helper function to get the correct image URL
@@ -23,6 +28,7 @@ const Home = () => {
       .then(data => {
         setOffer(data.offer || '');
         setImageUrl(data.imageUrl || '/nandhaGokulam.png');
+        if (data.hero) setHero(data.hero);
       });
   }, [apiBase]);
 
@@ -42,11 +48,9 @@ const Home = () => {
 
         {/* Left Section */}
         <div className="relative z-10 flex-1 min-w-[300px] flex flex-col justify-center">
-          <h2 className="text-[#003A80] text-3xl mb-2 font-semibold">DREAM PLOTS/FLOTS/VILLAS</h2>
-          <h1 className="text-[#003A80] text-5xl font-bold mb-4">FOR SALE</h1>
-          <p className="text-base text-[#333] mb-8">
-            We Deliver Only excellence and aim to exceed expectations in everything we do.
-          </p>
+          <h2 className="text-[#003A80] text-3xl mb-2 font-semibold">{hero.titleSmall}</h2>
+          <h1 className="text-[#003A80] text-5xl font-bold mb-4">{hero.titleLarge}</h1>
+          <p className="text-base text-[#333] mb-8">{hero.subtitle}</p>
 
           {/* Offer Card */}
           <div className="bg-gradient-to-r from-[#130cb7] to-[#aa08a4] text-white rounded-2xl flex items-center p-6 gap-6 w-fit self-center">
