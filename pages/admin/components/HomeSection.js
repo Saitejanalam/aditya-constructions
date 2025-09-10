@@ -14,7 +14,8 @@ const HomeSection = ({
   getImageUrl,
   hero,
   newHero,
-  setNewHero
+  setNewHero,
+  onBgSelect
 }) => {
   const [localSelectedFile, setLocalSelectedFile] = useState(null);
 
@@ -177,6 +178,17 @@ const HomeSection = ({
               </div>
             </div>
           )}
+        </div>
+
+        <div>
+          <label className="block font-semibold text-gray-700 mb-2">Upload Background Image</label>
+          <input
+            type="file"
+            accept=".png,.jpg,.jpeg"
+            onChange={onBgSelect}
+            className="w-full py-3 px-4 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-[#003A80] focus:border-transparent transition-all"
+          />
+          <div className="text-xs text-gray-500 mt-2">This image appears behind the enquiry form.</div>
         </div>
         
         <button 

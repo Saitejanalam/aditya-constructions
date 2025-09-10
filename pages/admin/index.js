@@ -27,6 +27,7 @@ function AdminHomeCMS() {
     subtitle: ''
   });
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedBgFile, setSelectedBgFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [homeLoading, setHomeLoading] = useState(false);
   const [aboutUsLoading, setAboutUsLoading] = useState(false);
@@ -93,6 +94,22 @@ function AdminHomeCMS() {
     setHomeMessage('');
   };
 
+  // Handle background image file select
+  const handleBgSelect = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const validTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!validTypes.includes(file.type)) {
+      setHomeMessage('Only PNG, JPG, and JPEG files are allowed!');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setHomeMessage('File size must be less than 5MB!');
+      return;
+    }
+    setSelectedBgFile(file);
+  };
+
   // Handle home section update (offer and image)
   const handleHomeUpdate = async (e) => {
     if (e && e.preventDefault) {
@@ -127,6 +144,25 @@ function AdminHomeCMS() {
         setSelectedFile(null);
         hasUpdates = true;
         updateMessages.push('image');
+      }
+
+      // Upload background image if selected
+      if (selectedBgFile) {
+        const bgFormData = new FormData();
+        bgFormData.append('image', selectedBgFile);
+        const uploadBgRes = await fetch(`${apiBase}/api/home/upload-background`, {
+          method: 'POST',
+          body: bgFormData
+        });
+        const uploadBgData = await uploadBgRes.json();
+        if (!uploadBgRes.ok) {
+          setHomeMessage(uploadBgData.error || 'Failed to upload background image');
+          setHomeLoading(false);
+          return;
+        }
+        setSelectedBgFile(null);
+        hasUpdates = true;
+        updateMessages.push('background');
       }
 
       // Update offer if provided
@@ -269,6 +305,7 @@ function AdminHomeCMS() {
             hero={hero}
             newHero={newHero}
             setNewHero={setNewHero}
+            onBgSelect={handleBgSelect}
           />
 
           {/* About Us Section */}

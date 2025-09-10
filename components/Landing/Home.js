@@ -8,6 +8,7 @@ const Home = () => {
     titleLarge: 'FOR SALE',
     subtitle: 'We Deliver Only excellence and aim to exceed expectations in everything we do.'
   });
+  const [homeBackgroundUrl, setHomeBackgroundUrl] = useState('/home-bg-h.png');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   
   // Helper function to get the correct image URL
@@ -22,12 +23,18 @@ const Home = () => {
     return url; // Default image or other relative paths
   };
 
+  const isDefaultImage = (url) => {
+    if (!url) return true;
+    return url === '/nandhaGokulam.png' || (typeof url === 'string' && url.endsWith('/nandhaGokulam.png'));
+  };
+
   useEffect(() => {
     fetch(`${apiBase}/api/home/offer`)
       .then(res => res.json())
       .then(data => {
         setOffer(data.offer || '');
         setImageUrl(data.imageUrl || '/nandhaGokulam.png');
+        if (data.homeBackgroundUrl) setHomeBackgroundUrl(data.homeBackgroundUrl);
         if (data.hero) setHero(data.hero);
       });
   }, [apiBase]);
@@ -41,7 +48,7 @@ const Home = () => {
       />
 
       <div
-        className="relative flex flex-nowrap gap-8 justify-between items-stretch w-full px-8 text-center bg-[url('/home-bg.png')] bg-cover bg-center overflow-hidden"
+        className="relative flex flex-nowrap gap-8 justify-between items-stretch w-full px-8 text-center "
       >
         {/* Background overlay for opacity/blur */}
         <div className="absolute inset-0 backdrop-blur-[2px] z-0" />
@@ -59,11 +66,16 @@ const Home = () => {
               <div className="text-2xl font-bold text-yellow-400">{offer ? offer : '...'} OFF</div>
               <div className="text-base">This Month</div>
             </div>
-            <div className="bg-white rounded-xl p-2">
+            <div className="p-2 relative">
+              {isDefaultImage(imageUrl) && (
+                <div className="absolute -top-2 -left-2 bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded-md shadow-sm">
+                  Default image
+                </div>
+              )}
               <img
                 src={getImageUrl(imageUrl)}
                 alt="Nanda Gokulam"
-                className="w-40 block"
+                className="w-40 block rounded-[10px]"
                 onError={(e) => {
                   e.target.src = '/nandhaGokulam.png';
                 }}
@@ -73,7 +85,9 @@ const Home = () => {
         </div>
 
         {/* Right Section */}
-        <div className="relative z-10 flex-1 min-w-[300px] flex justify-center items-center rounded-2xl">
+        <div className="relative z-10 flex-1 min-w-[300px] flex justify-center items-center rounded-2xl bg-cover bg-center overflow-hidden"
+          style={{ backgroundImage: `url(${getImageUrl(homeBackgroundUrl)})` }}
+        >
           <div className="bg-white/80 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-dashed border-[#333] max-w-[400px] w-full">
             <h3 className="text-[#003A80] mb-4 text-xl font-bold text-center">ENQUIRY FORM</h3>
             <form className="flex flex-col gap-4">
