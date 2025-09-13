@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Home = () => {
   const [offer, setOffer] = useState('');
@@ -9,6 +10,14 @@ const Home = () => {
     subtitle: 'We Deliver Only excellence and aim to exceed expectations in everything we do.'
   });
   const [homeBackgroundUrl, setHomeBackgroundUrl] = useState('/home-bg-h.png');
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   
   // Helper function to get the correct image URL
@@ -26,6 +35,78 @@ const Home = () => {
   const isDefaultImage = (url) => {
     if (!url) return true;
     return url === '/nandhaGokulam.png' || (typeof url === 'string' && url.endsWith('/nandhaGokulam.png'));
+  };
+
+  // EmailJS configuration (dummy credentials - replace with your actual values)
+  const EMAILJS_SERVICE_ID = 'service_abc123';
+  const EMAILJS_TEMPLATE_ID = 'template_xyz789';
+  const EMAILJS_PUBLIC_KEY = 'user_public_key_123';
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.email.trim()) {
+      setSubmitMessage('Please fill in all required fields');
+      setTimeout(() => setSubmitMessage(''), 5000);
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitMessage('Please enter a valid email address');
+      setTimeout(() => setSubmitMessage(''), 5000);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone_number: formData.phone,
+        message: formData.message,
+        to_email: 'phanitech2020@gmail.com',
+        company_name: 'Sri Aditya Developers'
+      };
+
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
+
+      if (response.status === 200) {
+        setSubmitMessage('Thank you! Your enquiry has been sent successfully.');
+        setFormData({ name: '', phone: '', email: '', message: '' });
+      } else {
+        throw new Error('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitMessage('Sorry, there was an error sending your enquiry. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setSubmitMessage(''), 5000);
+    }
   };
 
   useEffect(() => {
@@ -90,16 +171,63 @@ const Home = () => {
         >
           <div className="bg-white/80 p-8 rounded-2xl shadow-lg backdrop-blur-sm border border-dashed border-[#333] max-w-[400px] w-full">
             <h3 className="text-[#003A80] mb-4 text-xl font-bold text-center">ENQUIRY FORM</h3>
-            <form className="flex flex-col gap-4">
-              <input type="text" placeholder="Name" className={inputStyle} />
-              <input type="text" placeholder="Phone Number" className={inputStyle} />
-              <input type="email" placeholder="Email Address" className={inputStyle} />
-              <textarea placeholder="Message" rows={3} className={inputStyle + ' resize-none'} />
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <input 
+                type="text" 
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Name *" 
+                className={inputStyle}
+                required
+              />
+              <input 
+                type="tel" 
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="Phone Number *" 
+                className={inputStyle}
+                required
+              />
+              <input 
+                type="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Email Address *" 
+                className={inputStyle}
+                required
+              />
+              <textarea 
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="Message" 
+                rows={3} 
+                className={inputStyle + ' resize-none'} 
+              />
+              
+              {submitMessage && (
+                <div className={`p-3 rounded-lg text-center text-sm font-medium ${
+                  submitMessage.includes('successfully') || submitMessage.includes('Thank you')
+                    ? 'bg-green-100 text-green-800 border border-green-200'
+                    : 'bg-red-100 text-red-800 border border-red-200'
+                }`}>
+                  {submitMessage}
+                </div>
+              )}
+              
               <button
                 type="submit"
-                className="bg-gray-700 text-white border-none py-3 rounded-lg cursor-pointer font-bold text-base w-[100px] mx-auto"
+                disabled={isSubmitting}
+                className={`${
+                  isSubmitting 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-gray-700 hover:bg-gray-800'
+                } text-white border-none py-3 rounded-lg cursor-pointer font-bold text-base w-[100px] mx-auto transition-colors`}
               >
-                Submit
+                {isSubmitting ? 'Sending...' : 'Submit'}
               </button>
             </form>
           </div>
